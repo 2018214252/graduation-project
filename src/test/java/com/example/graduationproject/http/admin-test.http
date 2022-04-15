@@ -1,0 +1,41 @@
+POST http://localhost:8080/api/admin/organization
+Content-Type: application/json
+
+{
+  "name": "第一支部",
+  "type": "1",
+  "tel": "15525146",
+  "mp": "15066260178",
+  "address": "山东青岛",
+  "preid": 1,
+  "state": "正常"
+}
+###
+GET http://localhost:8080/api/admin/organizations
+###
+POST http://localhost:8080/api/admin/car
+Content-Type: application/json
+
+{
+  "number": "鲁B52522",
+  "type": "1",
+  "speed": 25,
+  "loading": 25,
+  "size": "15*15*15",
+  "date": "2018-12-25",
+  "state": "正常"
+}
+###
+GET http://localhost:8080/api/admin/cars
+###
+POST http://localhost:8080/api/admin/putin
+Content-Type: application/json
+
+{
+  "name": "1",
+  "quantity": 100,
+  "whname": "仓库一",
+  "head": "1",
+  "type": 0,
+  "date": "2018"
+}
