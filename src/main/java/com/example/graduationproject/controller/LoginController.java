@@ -2,7 +2,9 @@ package com.example.graduationproject.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.graduationproject.common.EncryptComponent;
+import com.example.graduationproject.common.Role;
 import com.example.graduationproject.entity.User;
+import com.example.graduationproject.entity.logistics.Delivery;
 import com.example.graduationproject.service.UserService;
 import com.example.graduationproject.vo.ResultVO;
 import io.swagger.annotations.Api;
@@ -44,29 +46,20 @@ public class LoginController {
         String token = encryptComponent.encrypt(Map.of("uid", u.getId(), "role", u.getRole()));
         log.debug(token);
         response.addHeader("token", token);
-        return ResultVO.success(Map.of("uid", u.getId(), "role", u.getRole()));
+        return ResultVO.success(Map.of("user", u));
     }
 
-//    @ApiOperation("注册")
-//    @PostMapping("register")
-//    public ResultVO registered(@RequestBody RegisterDTO registerDTO){
-//        User user = User.builder()
-//                .userName(registerDTO.getPhoneNumber())
-//                .password(registerDTO.getPassword())
-//                .build();
-//        if(userService.getUserByName(user.getUserName())!=null){
-//            return ResultVO.error(400,"用户名已注册");
-//        }
-//        user.setRole(Role.PATIENT);
-//        userService.insertUser(user);
-//        User u = userService.getUserByName(user.getUserName());
-//        Patient patient = Patient.builder()
-//                .id(u.getId())
-//                .name(registerDTO.getName())
-//                .number(registerDTO.getNumber())
-//                .build();
-//        patientService.insertPatient(patient);
-//        return ResultVO.success(Map.of());
-//    }
+    @ApiOperation("注册")
+    @PostMapping("register")
+    public ResultVO registered(@RequestBody User user){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username",user.getUsername());
+        if(userService.getUser(queryWrapper)!=null){
+            return ResultVO.error(400,"用户名已注册");
+        }
+        user.setRole(Role.USER);
+        userService.insertUser(user);
+        return ResultVO.success(Map.of());
+    }
 }
 

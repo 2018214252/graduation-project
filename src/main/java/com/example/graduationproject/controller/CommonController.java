@@ -56,4 +56,12 @@ public class CommonController {
         queryWrapper.eq("oid",oid);
         return ResultVO.success(Map.of("deliverys", deliveryService.selectDelivery(queryWrapper)));
     }
+
+    @ApiOperation("查询订单记录")
+    @GetMapping("orders/{uid}")
+    public ResultVO getOrders(@PathVariable String uid) {
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("customer_number",uid);
+        return ResultVO.success(Map.of("orders", orderService.selectOrder(queryWrapper)));
+    }
 }
