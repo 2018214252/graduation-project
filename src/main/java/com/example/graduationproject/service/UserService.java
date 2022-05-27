@@ -3,6 +3,7 @@ package com.example.graduationproject.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.graduationproject.entity.User;
 import com.example.graduationproject.entity.basis.Car;
+import com.example.graduationproject.entity.basis.Organization;
 import com.example.graduationproject.mapper.CarMapper;
 import com.example.graduationproject.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -31,5 +34,9 @@ public class UserService {
 
     public User getUser(QueryWrapper<User> wrapper) {
         return userMapper.selectOne(wrapper);
+    }
+
+    public List<User> selectUsers(QueryWrapper<User> wrapper) {
+        return userMapper.selectList(wrapper);
     }
 }

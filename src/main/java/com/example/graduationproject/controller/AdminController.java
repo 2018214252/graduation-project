@@ -379,4 +379,5 @@ public class AdminController {
         QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
         return ResultVO.success(Map.of("orders", orderService.selectOrder(queryWrapper)));
     }
+
 }

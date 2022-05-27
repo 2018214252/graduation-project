@@ -21,5 +21,5 @@ public class Agriculture {
     private String storage;//储存环境
     private int price;
     private String remark;//备注
-
+    private boolean fresh;
 }

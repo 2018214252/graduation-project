@@ -11,8 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@TableName("user")
-public class User {
+
+public class UserDTO {
     private Long id;
     private String username;
     private String password;
@@ -23,4 +23,5 @@ public class User {
     private String phone;
     private String mailbox;//邮箱
     private String cardno;//身份证号
+    private List<Order> orders;
 }

@@ -1,9 +1,12 @@
 package com.example.graduationproject.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.graduationproject.common.Recommend;
 import com.example.graduationproject.entity.User;
+import com.example.graduationproject.entity.UserDTO;
 import com.example.graduationproject.entity.logistics.Delivery;
 import com.example.graduationproject.entity.logistics.Order;
+import com.example.graduationproject.entity.storage.InventoryRecords;
 import com.example.graduationproject.entity.storage.Warehouse;
 import com.example.graduationproject.service.DeliveryService;
 import com.example.graduationproject.service.OrderService;
@@ -16,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Api(value = "处理通用操作请求", tags = {"Common"})
@@ -30,6 +35,9 @@ public class CommonController {
     private OrderService orderService;
     @Autowired
     private DeliveryService deliveryService;
+    @Autowired
+    private Recommend recommend;
+
 
     @ApiOperation("创建账号")
     @PostMapping("user")
@@ -63,5 +71,32 @@ public class CommonController {
         QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("customer_number",uid);
         return ResultVO.success(Map.of("orders", orderService.selectOrder(queryWrapper)));
+    }
+
+    @ApiOperation("查询推荐商品")
+    @GetMapping("recommend/{uid}")
+    public ResultVO getRecommend(@PathVariable Long uid) {
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("customer_number", uid);
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(uid);
+        userDTO.setOrders(orderService.selectOrder(queryWrapper));
+        //System.out.println(userDTO.getOrders().size());
+
+        List<UserDTO> userdtos = new ArrayList<>();
+        QueryWrapper<User> queryWrapper2 = new QueryWrapper<>();
+        List<User> users = userService.selectUsers(queryWrapper2);
+        for(User u:users){
+            UserDTO user = new UserDTO();
+            user.setId(u.getId());
+            QueryWrapper<Order> queryWrapper3 = new QueryWrapper<>();
+            queryWrapper3.eq("customer_number", u.getId());
+            user.setOrders(orderService.selectOrder(queryWrapper3));
+            System.out.println(user.getOrders().size());
+            userdtos.add(user);
+        }
+
+
+        return ResultVO.success(Map.of("a", recommend.recommend(userDTO,userdtos)));
     }
 }
